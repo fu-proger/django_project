@@ -2,4 +2,4 @@
 print("Hello there")
 s = input()
 if s == "General Kenobi":
-    print("Ok, boomer")
+    print("Ok boomer")
