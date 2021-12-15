@@ -1,23 +1,30 @@
-# это очень важный проект на github, откройте другую папку
 import pygame
-
-def draw(screen):
-    screen.fill((0, 0, 0))
-    font = pygame.font.Font(None, 50)
-    text = font.render("Hello, Pygame!", True, pygame.Color("#ab0baa"))
-    text_x = width // 2 - text.get_width() // 2
-    text_y = height // 2 - text.get_height() // 2
-    text_w = text.get_width()
-    text_h = text.get_height()
-    screen.blit(text, (text_x, text_y))
-    pygame.draw.rect(screen, (0, 255, 0), (text_x - 10, text_y - 10, text_w + 20, text_h + 20), 1)
 
 if __name__ == '__main__':
     pygame.init()
-    size = width, height = 800, 600
+    pygame.display.set_caption('Движущийся круг x')
+    size = width, height = 1920, 1080
     screen = pygame.display.set_mode(size)
-    draw(screen)
-    pygame.display.flip()
-    while pygame.event.wait().type != pygame.QUIT:
+    running = True
+    x_pos = 0
+    v = 3200  # пикселей в секунду
+    clock = pygame.time.Clock()
+    fps = 60  # количество кадров в секунду
+    running = True
+    color = (255, 0, 0)
+    r = 1.0
+    screen.fill((255, 0, 0))
+    while running:
+        #screen.fill((0, 0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEMOTION:
+                pygame.draw.circle(screen, color, event.pos, int(r))
+                r += 0.1
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                color = (0, 255, 0)
+            if event.type == pygame.MOUSEBUTTONUP:
+                color = (255, 0, 0)
         pygame.display.flip()
-    pygame.quit()
+        clock.tick(fps)
