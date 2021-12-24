@@ -2,25 +2,14 @@ import random
 import pygame
 
 class Snake:
+    def __init__(self, id: int) -> None:
+        self.id = id
+        self.body = list()
 
-    def __init__(self, start_len: int, field_size: tuple) -> None:
-        self.snake_len = start_len
-        self.field_size = field_size
-        self.snake = list()
-        self.food = None
-        self.food_exists = False
-        self._init_snake()
-        field = list()
-        self.free_field = set()
-        for x in range(field_size[0]):
-            for y in range(field_size[1]):
-                self.free_field.add((x, y))
 
-    def _init_snale(self):
-        for index in range(self.snake_len):
-            self.snake.append((0, index))
-            self.free_field.remove((0, index))
-        self.snake = self.snake
+    def init_snale(self, snake_len):
+        for index in range(snake_len):
+            self.body.append((self.id * 2 + 1, index + 1))
 
     def move(self, direction_key: tuple) -> None:
         '''
@@ -29,46 +18,44 @@ class Snake:
         1, 0 - right
         -1, 0 - up
         '''
-        head = self.snake[-1]
+        head = self.body[-1]
         new_head = (head[0] + direction_key[0], head[1] + direction_key[1])
-        self.snake.append(new_head)
-        self.free_field.remove(new_head)
-        self.snake_len += 1
-        if(not self._on_food):
-            self.free_field.add(self.snake[0])
-            self.snake = self.snake[1:]
-            self.snake_len -= 1
+        self.body.append(new_head)
+
+class Field:
+
+    def __init__(self, field_size: tuple, start_len: int):
+        self.size = field_size
+        self.start_len = start_len
+        self.free_cells = set()
+        self.food = None
+        self.food_exists = False
+        for x in range(field_size[0]):
+            for y in range(field_size[1]):
+                self.free_cells.add((x, y))
+        self.players = list()
+
+    def add_player(self) -> None:
+        self.players.append(Snake(len(self.players)))
+        for pixel in self.players[-1].body:
+            self.free_cells.remove(pixel)
+
 
     def generate_food(self) -> None:
         if self.food_exists:
             return
         self.food = random.choice(self.free_field)
-        
-    
-    def _on_food(self) -> bool:
-        if self.snake[-1] in self.food:
-            self.food_exists = False
-            return True
-        else:
-            return False
 
-    def lose(self) -> bool:
-        head = self.snake[-1]
-        if head in self.snake[:-1]:
-            return True
-        if head[0] < 0 or head[1] < 0:
-            return True
-        if head[0] > self.field_size[0] or head[1] > self.field_size[1]:
-            return True
-        return False
 
-    def draw(self):
-        return self.snake, self.food
+
+
+
 
 pygame.init()
 screen = pygame.display.set_mode((1000, 1000))
 size = 50
-snake = Snake()
+field = Field((size,size), 3)
+field.add_player()
 
 while 1:
     for event in pygame.event.get():
