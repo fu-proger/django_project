@@ -1,20 +1,20 @@
-def f(n):
-    c4 = 0
-    n4 = n
-    while n4:
-        c4 += n4 % 4
-        n4 //= 4
-    c8 = 0
-    n8 = n
-    while n8:
-        c8 += n8 % 8
-        n8 //= 8
-    return c8 == c4
+class Point:
+    def __init__(self, name, x, y):
+        self.x = x
+        self.y = y
+        self.name = name
 
+    def get_x(self):
+        return self.x
 
-ans = 0
-n = 40
-for i in range(2 ** n):
-    if f(i):
-        ans += 1
-print(ans)
+    def get_y(self):
+        return self.y
+
+    def get_coords(self):
+        return tuple([self.x, self.y])
+
+    def __invert__(self):
+        return Point(self.name, self.y, self.x)
+
+    def __str__(self):
+        return self.name + "(" + str(self.x) + ", " + str(self.y) + ")"
