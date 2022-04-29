@@ -5,7 +5,7 @@
 {% for item in jobs%}
 <div class="col-md6 border rounded">
     <h2>Action # {{loop.index}}</h2>
-        <div class="table_container">
+        <div>
             <table class="my_table">
                 <tr class="table-secondary">
                     <td>Title of activity</td>
@@ -14,7 +14,7 @@
                     <td>List of collaborators</td>
                     <td>Is finished</td>
                 </tr>
-                <tr class="table-dark">
+                <tr class="table-success">
                     <td>{{item.job}}</td>
                     <td>{{item.team_leader}}</td>
                     <td>{{item.work_size}} часов</td>
